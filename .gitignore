@@ -1,0 +1,12 @@
+# IntelliJ IDEA에서 생성되는 파일 및 폴더
+.idea/
+*.iml
+
+# 빌드 출력 폴더 (가장 중요)
+# Maven, Gradle 등을 사용하면 일반적으로 target/ 또는 build/ 폴더가 생성됩니다.
+/target/
+/build/
+
+# 기타 로그 파일, 컴파일 시 생성되는 파일
+*.class
+*.log
