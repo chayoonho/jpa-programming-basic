@@ -21,7 +21,7 @@ public class Member {
 
     // 객체지향모델링으로 refactoring
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
+    @JoinColumn(name = "TEAM_ID") // 연관관계를 매핑하자
     private Team team;
 
     public Long getId() {

@@ -15,17 +15,24 @@ public class JpaMain {
         tx.begin();
 
         try {
-
+            // 저장
             Team team = new Team();
             team.setName("TeamA");
             em.persist(team);
 
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeamId(team.getId()); //setTeam 외래키 식별자를 직접 다룸 당연히 이 방법 밖에없다 생각했다...
+//            member.setTeamId(team.getId()); //setTeam 외래키 식별자를 직접 다룸 당연히 이 방법 밖에없다 생각했다...
+            member.setTeam(team); // 객체 지향적
             em.persist(member);
 
-            Member findTeamId = em.find(Member.class, member.getId());
+            // 조회
+            Member findMember = em.find(Member.class, member.getId());
+
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
+
+
 
             tx.commit();
         } catch (Exception e) {
