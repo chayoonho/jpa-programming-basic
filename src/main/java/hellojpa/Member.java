@@ -18,21 +18,10 @@ public class Member extends BaseEntity{
     @Column(name = "USERNAME")
     private String username;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
-
-
     // 일대다 양방향 예시
     @ManyToOne
     @JoinColumn(insertable = false, updatable = false)
     private Team team;
-
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
-
-    @OneToMany
-    private List<MemberProduct> products = new ArrayList<>();
 
     public Long getId() {
         return id;

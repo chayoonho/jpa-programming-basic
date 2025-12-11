@@ -17,17 +17,19 @@ public class JpaMain {
 
         try {
             Member member = new Member();
-            member.setCreatedBy("kim");
-            member.setUsername("user1");
-            member.setCreatedDate(LocalDateTime.now());
+            member.setUsername("hello");
 
             em.persist(member);
 
-            em.clear();
             em.flush();
+            em.clear();
 
-            em.find(BaseEntity.class, member);
-
+//            Member findMember = em.find(Member.class, member.getId());
+            // 프록시 객체 조회
+            Member findMember = em.getReference(Member.class, member.getId());
+            System.out.println("before findMember = " + findMember.getClass());
+            System.out.println("findMember.getUsername() = " + findMember.getUsername());
+            System.out.println("after findMember = " + findMember.getClass());
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
