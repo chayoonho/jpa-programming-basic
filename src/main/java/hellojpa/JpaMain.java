@@ -1,6 +1,7 @@
 package hellojpa;
 
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,11 +28,7 @@ public class JpaMain {
             Member refMember = em.getReference(Member.class, member.getId());
             System.out.println("refMember = " + refMember.getClass()); //Proxy
 
-//            em.detach(refMember);
-            em.clear();
-
-            refMember.getUsername();
-            System.out.println("refMember = " + refMember.getUsername());
+            Hibernate.initialize(refMember);//강제초기화
 
             tx.commit();
         } catch (Exception e) {
