@@ -18,10 +18,14 @@ public class Member extends BaseEntity{
     @Column(name = "USERNAME")
     private String username;
 
-    // 일대다 양방향 예시
-    @ManyToOne
-    @JoinColumn(insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
     private Team team;
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
+    }
 
     public Long getId() {
         return id;
@@ -43,8 +47,7 @@ public class Member extends BaseEntity{
         return team;
     }
 
-    public void changeTeam(Team team) {
+    public void setTeam(Team team) {
         this.team = team;
-        team.getMembers().add(this);
     }
 }
