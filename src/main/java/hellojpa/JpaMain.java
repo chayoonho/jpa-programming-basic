@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -17,19 +18,35 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 값을 복사해서 사용해야함 ! 공유하는 것은 위험 -> 생성자로만 값 접근해야함
-            // ** 불변이라는 작은 제약으로 부작용이라는 큰 재앙을 막을수 있다. **
-            Address address = new Address("city", "street", "1000");
-
             Member member = new Member();
             member.setUsername("member1");
-            member.setHomeAddress(address);
+            member.setHomeAddress(new Address("homeCity","street","10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add((new Address("old1", "street", "10000")));
+            member.getAddressHistory().add((new Address("old2", "street", "10000")));
+
             em.persist(member);
 
-            // 수정하려면 이렇케 통으로 바꿔야함
-            Address newAddress = new Address("New City", address.getStreet(), address.getZipcode());
-            member.setHomeAddress(newAddress);
-            
+            em.flush();
+            em.clear();
+
+            System.out.println("=====================================");
+            Member findMember = em.find(Member.class, member.getId());
+
+            List<Address> addressHistory = findMember.getAddressHistory();
+            for (Address address : addressHistory) {
+                System.out.println("address.getCity() = " + address.getCity());
+            }
+
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
